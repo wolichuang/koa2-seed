@@ -1,0 +1,9 @@
+{% extends 'layout.html' %}
+{% block body %}
+<h1>{{ title }}</h1>
+<form action="/signin" method="post">
+  <p>用户名： <input type="text" name="name" value="koa"></p>
+  <p>密码： <input type="password" name="password" value="koa"></p>
+  <p><input type="submit" value="提交"></p>
+</form>
+{% endblock %}

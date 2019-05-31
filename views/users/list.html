@@ -1,0 +1,41 @@
+{% extends '../layout.html' %}
+{% block body %}
+<h1>{{ title }}</h1>
+<h3><a href="/users/add">新增用户</a></h3>
+<div id="list">
+    <ul>
+    {% for user in data %}
+        <li>{{ user.username}}  {{ user.password}}  {{ user.realname}} <a href="/users/queryById/{{ user.id}}">修改</a><a href="/users/deleteById/{{user.id}}">删除</a></li>
+    {% endfor %}
+    </ul>
+</div>
+<a href="javascript:void(0)" class="btnMore">加载更多</a>
+<script>
+
+    $(function(){
+        
+        $(".btnMore").on("click",function(){
+            $.ajax({
+               url:'http://127.0.0.1:3000/api/user/all',
+               type:'GET',
+               dataType:'json',
+               async:true,
+               success:function(res){
+                   if(res.code == 0){
+                    var tpl = '{@each result as user,index}<li>${user.username} ${user.password} ${user.realname}'
+                    +'<a href="/users/queryById/{{ user.id}}">修改</a><a href="/users/deleteById/{{user.id}}">删除</a></li>{@/each}';
+                    var html = juicer(tpl, res);
+
+                    $("#list ul").append(html);
+                   }else{
+                      $(".btnMore").html("加载完成");
+                   }
+               },
+               error:function(err){
+
+               }
+            })
+        })
+    })
+</script>
+{% endblock %}
